@@ -22,15 +22,28 @@ fn main() {
 use ```info!("Hello World!")``` instead of ```println!("Hello World!")```
 
 ## Custom Commands
-Add a unique command like this:
-First create a struct which will parse the input string
+A simple way is to create a system to listen to the TUICommand message
+```rs
+pub fn my_command(
+    mut command_reader: MessageReader<TUICommand>,
+    //...System Params
+) {
+    for command in command_reader.read() {
+        //print first argument
+        info!("{}", command.args[0])
+    }
+}
+```
+
+Or alternatively the proper way to do it is to
+1. create a struct which will parse the input string
 ```rs
 use bevy_tui::*;
 
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct MyConsoleCommand;
 ```
-Then create a FromStr implementation to parse it from a string
+2. Then create a FromStr implementation to parse it from a string
 ```rs
 impl FromStr for MyConsoleCommand {
     type Err = String;
@@ -44,9 +57,9 @@ impl FromStr for MyConsoleCommand {
     }
 }
 ```
-Then implement the listener which will execute the command
+3. Then implement the listener which will execute the command by parsing it
 ```rs
-pub fn clear_command(
+pub fn my_command(
     mut command_reader: MessageReader<TUICommand>,
     //...System Params
 ) {
