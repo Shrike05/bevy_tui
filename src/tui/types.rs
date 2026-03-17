@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use clap::Parser;
 use std::str::FromStr;
 use tui_logger::TuiWidgetState;
 
@@ -56,6 +57,10 @@ impl TUICommand {
 
     pub fn parse<T: FromStr>(&self) -> Result<T, T::Err> {
         self.input.parse::<T>()
+    }
+
+    pub fn parse_clap<T: Parser>(&self) -> Result<T, clap::error::Error> {
+        T::try_parse_from(self.input.split_whitespace())
     }
 }
 
