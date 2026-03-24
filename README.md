@@ -19,6 +19,7 @@ fn main() {
 ```
 
 ## Printing
+import ```use log::info``` then
 use ```info!("Hello World!")``` instead of ```println!("Hello World!")```
 
 ## Custom Commands
